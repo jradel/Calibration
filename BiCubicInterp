@@ -1,0 +1,41 @@
+// Author: Victor BG
+// Date: Apr. 13, 2017
+// Aug 13, 2017 - compiled as standalone
+// Sep. 03, 2017 - created routines.h & routine.cpp
+// Sep.04, 2017 - made it to automatically compute all the files in a folder.
+
+/*
+This program was written to compute a bicubic interpolation in C++.
+This is to compute the calibration correction on the Station IX screens.
+It has been modified from the tutorial that can be found at:
+http://www.alglib.net/translator/man/manual.cpp.html#example_spline2d_bicubic
+*/
+
+// Header
+#include "routines.h"
+
+// Main
+int main(int argc, char **argv){
+    // Obtaining the file names in the folder.
+    vector<string> filenames = get_file_names("./CSV_TO_CONVERT/");
+
+    // For every CSV, do the conversion.
+    for(int ind = 0; ind < filenames.size(); ind ++){
+        // Extracting the string.
+        string str = filenames[ind];
+        cout << str << endl;
+
+
+        // Checking if it is indeed a CSV file.
+        str.erase(str.begin(), str.end()-4);
+        if(str == ".csv"){
+            // Routine call to extract data.
+            struct_data dat1 = fetch_data(filenames[ind]);
+
+            // Routine call to compute interpolation
+            bicubic_interp(dat1, filenames[ind]); // comment to reduce computation time.
+        }//if
+    }//for
+
+    return 0;
+}//main
